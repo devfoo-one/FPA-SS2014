@@ -8,6 +8,9 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
+  public static final int WINDOW_WIDTH = 800;
+  public static final int WINDOW_HEIGHT = 600;
+
   public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
     super(configurer);
   }
@@ -20,7 +23,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
   @Override
   public void preWindowOpen() {
     IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-    configurer.setInitialSize(new Point(800, 600));
+    configurer.setInitialSize(new Point(WINDOW_WIDTH, WINDOW_HEIGHT));
     configurer.setShowCoolBar(false);
     configurer.setShowStatusLine(false);
     configurer.setTitle("FPA Mailer"); //$NON-NLS-1$
