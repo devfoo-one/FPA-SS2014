@@ -8,8 +8,8 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
-  public static final int WINDOW_WIDTH = 800;
-  public static final int WINDOW_HEIGHT = 600;
+  private static final int WINDOW_WIDTH = 800;
+  private static final int WINDOW_HEIGHT = 600;
 
   public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
     super(configurer);
