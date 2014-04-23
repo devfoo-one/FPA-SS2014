@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 public class NavigationView extends ViewPart {
-  public static final String ID = "de.bht.fpa.s<MATRIKELNUMMER>.fsnavigation.NavigationView";
+  public static final String ID = "de.bht.fpa.s798158.fsnavigation.NavigationView";
   private TreeViewer viewer;
 
   /**
@@ -37,7 +37,7 @@ public class NavigationView extends ViewPart {
   private Object createModel() {
     // Our root item is simply a dummy Object. Here you need to provide your own
     // root class.
-    return new Object();
+    return new MyFile(new java.io.File(System.getProperty("user.home")));
   }
 
   /**
