@@ -37,7 +37,7 @@ public class NavigationView extends ViewPart {
   private Object createModel() {
     // Our root item is simply a dummy Object. Here you need to provide your own
     // root class.
-    return new MyFileSystemObject(new java.io.File(System.getProperty("user.home")));
+    return new MyDirectory(new java.io.File(System.getProperty("user.home")));
   }
 
   /**
