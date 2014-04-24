@@ -20,7 +20,7 @@ public class ViewContentProvider implements ITreeContentProvider {
     // every given tree item, we say it has no children. Here you should cast
     // the parentElement to your own class and return its children.
     // return new Object[0];
-    final MyFile elementFile = (MyFile) parentElement;
+    final MyFileSystemObject elementFile = (MyFileSystemObject) parentElement;
     return elementFile.getChildren();
   }
 
@@ -40,7 +40,7 @@ public class ViewContentProvider implements ITreeContentProvider {
     // For every element, we say to the framework that is has no children. Here
     // you should cast the element to your own class and check if it has
     // children.
-    final MyFile elementFile = (MyFile) element;
+    final MyFileSystemObject elementFile = (MyFileSystemObject) element;
     return elementFile.hasChildren();
   }
 

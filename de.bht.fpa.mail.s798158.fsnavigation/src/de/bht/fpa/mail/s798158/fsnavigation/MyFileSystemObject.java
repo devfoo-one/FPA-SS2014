@@ -1,9 +1,9 @@
 package de.bht.fpa.mail.s798158.fsnavigation;
 
-public class MyFile {
+public class MyFileSystemObject {
   private final java.io.File file;
 
-  public MyFile(final java.io.File file) {
+  public MyFileSystemObject(final java.io.File file) {
     this.file = file;
   }
 
@@ -23,7 +23,7 @@ public class MyFile {
     int i = 0;
     final Object[] result = new Object[file.listFiles().length];
     for (final java.io.File element : file.listFiles()) {
-      result[i] = new MyFile(element);
+      result[i] = new MyFileSystemObject(element);
       i++;
     }
     return result;
