@@ -2,6 +2,7 @@ package de.bht.fpa.mail.s798158.fsnavigation;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class ViewLabelProvider extends LabelProvider {
   @Override
@@ -20,14 +21,10 @@ public class ViewLabelProvider extends LabelProvider {
     final MyFileSystemObject elementMyFSO = (MyFileSystemObject) element;
     final Image img;
 
-    // instanceof Schlüsselwort ... irgendwie muss dass auch so gehen
-
-    switch (elementMyFSO.getClass().getSimpleName()) {
-    case "MyDirectory":
-      img = Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/folder.png").createImage();
-      break;
-    default:
-      img = Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/document-new.png").createImage();
+    if (elementMyFSO instanceof MyDirectory) {
+      img = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/folder.png").createImage();
+    } else {
+      img = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/document-new.png").createImage();
     }
     return img;
   }
