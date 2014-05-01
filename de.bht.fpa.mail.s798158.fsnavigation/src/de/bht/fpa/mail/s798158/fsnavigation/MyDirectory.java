@@ -1,6 +1,7 @@
 package de.bht.fpa.mail.s798158.fsnavigation;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class MyDirectory extends MyFileSystemObject {
 
@@ -14,15 +15,15 @@ public class MyDirectory extends MyFileSystemObject {
   }
 
   @Override
-  public MyFileSystemObject[] getChildren() {
+  public ArrayList<MyFileSystemObject> getChildren() {
     int i = 0;
-    final MyFileSystemObject[] result = new MyFileSystemObject[file.listFiles().length];
+    final ArrayList<MyFileSystemObject> result = new ArrayList<MyFileSystemObject>();
     for (final java.io.File element : file.listFiles()) {
       if (element.isDirectory()) {
-        result[i] = new MyDirectory(element);
+        result.add(new MyDirectory(element));
       }
       if (element.isFile()) {
-        result[i] = new MyFile(element);
+        result.add(new MyFile(element));
       }
       i++;
     }

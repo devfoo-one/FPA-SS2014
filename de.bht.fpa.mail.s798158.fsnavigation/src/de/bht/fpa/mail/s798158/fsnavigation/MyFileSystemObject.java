@@ -1,5 +1,7 @@
 package de.bht.fpa.mail.s798158.fsnavigation;
 
+import java.util.ArrayList;
+
 public abstract class MyFileSystemObject {
   protected final java.io.File file;
 
@@ -11,16 +13,12 @@ public abstract class MyFileSystemObject {
     return false;
   }
 
-  public MyFileSystemObject[] getChildren() {
-    return new MyFileSystemObject[0];
+  public ArrayList<MyFileSystemObject> getChildren() {
+    return null;
   }
 
   public String getName() {
     return file.getName();
   }
-
-  // public boolean isDirectory() {
-  // return file.isDirectory();
-  // }
 
 }
