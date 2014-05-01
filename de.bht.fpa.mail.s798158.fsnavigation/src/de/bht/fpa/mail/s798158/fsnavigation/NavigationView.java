@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 public class NavigationView extends ViewPart {
-  public static final String ID = "de.bht.fpa.s798158.fsnavigation.NavigationView";
+  public static final String ID = "de.bht.fpa.mail.s798158.fsnavigation.NavigationView";
   private TreeViewer viewer;
 
   /**
@@ -46,5 +46,10 @@ public class NavigationView extends ViewPart {
   @Override
   public void setFocus() {
     viewer.getControl().setFocus();
+  }
+
+  public void updateModel(java.io.File arg) {
+    viewer.setInput(new MyDirectory(arg));
+    viewer.refresh();
   }
 }

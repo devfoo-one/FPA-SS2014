@@ -21,7 +21,7 @@ public class ViewContentProvider implements ITreeContentProvider {
     // the parentElement to your own class and return its children.
     // return new Object[0];
     final MyFileSystemObject elementFile = (MyFileSystemObject) parentElement;
-    return elementFile.getChildren();
+    return elementFile.getChildren().toArray();
   }
 
   /**

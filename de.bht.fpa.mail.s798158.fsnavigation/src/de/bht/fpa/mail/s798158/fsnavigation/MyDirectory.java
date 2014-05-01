@@ -16,7 +16,6 @@ public class MyDirectory extends MyFileSystemObject {
 
   @Override
   public ArrayList<MyFileSystemObject> getChildren() {
-    int i = 0;
     final ArrayList<MyFileSystemObject> result = new ArrayList<MyFileSystemObject>();
     for (final java.io.File element : file.listFiles()) {
       if (element.isDirectory()) {
@@ -25,7 +24,6 @@ public class MyDirectory extends MyFileSystemObject {
       if (element.isFile()) {
         result.add(new MyFile(element));
       }
-      i++;
     }
     return result;
   }
