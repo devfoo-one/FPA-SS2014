@@ -1,11 +1,13 @@
 package de.bht.fpa.mail.s798158.fsnavigation;
 
+import java.util.Observable;
+
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
-public class NavigationView extends ViewPart {
+public class NavigationView extends ViewPart implements java.util.Observer {
   public static final String ID = "de.bht.fpa.s798158.fsnavigation.NavigationView";
   private TreeViewer viewer;
 
@@ -29,6 +31,7 @@ public class NavigationView extends ViewPart {
     // Here we set the root of the tree. The framework will ask for more data
     // when the user expands tree items.
     viewer.setInput(createModel());
+    // System.out.println(this);
   }
 
   /**
@@ -46,5 +49,12 @@ public class NavigationView extends ViewPart {
   @Override
   public void setFocus() {
     viewer.getControl().setFocus();
+  }
+
+  @Override
+  public void update(Observable o, Object arg) {
+    final MyDirectory dir = new MyDirectory(new java.io.File((String) arg));
+    viewer.setInput(dir);
+
   }
 }
