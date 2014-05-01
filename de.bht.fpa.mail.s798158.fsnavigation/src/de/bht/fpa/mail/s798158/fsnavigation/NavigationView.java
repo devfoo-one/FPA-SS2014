@@ -29,7 +29,6 @@ public class NavigationView extends ViewPart {
     // Here we set the root of the tree. The framework will ask for more data
     // when the user expands tree items.
     viewer.setInput(createModel());
-    // System.out.println(this);
   }
 
   /**
