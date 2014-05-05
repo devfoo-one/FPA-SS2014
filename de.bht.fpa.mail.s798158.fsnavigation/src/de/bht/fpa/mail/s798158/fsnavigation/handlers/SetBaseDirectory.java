@@ -31,8 +31,13 @@ public class SetBaseDirectory extends AbstractHandler {
     IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 
     // DEBUG! vor Abgabe Kommentar entfernen
-    // DirectoryDialog dd = new DirectoryDialog(window.getShell());
-    // final String dir = dd.open();
+    /*
+     * org.eclipse.swt.widgets.DirectoryDialog dd = new
+     * org.eclipse.swt.widgets.DirectoryDialog(window.getShell());
+     * dd.setText("Set Base Directory");
+     * dd.setMessage("choose new base directory..."); final String dir =
+     * dd.open();
+     */
 
     // DEBUG! vor Abgabe AUSkommentieren
     final String dir = "/Users/tom/Downloads";
