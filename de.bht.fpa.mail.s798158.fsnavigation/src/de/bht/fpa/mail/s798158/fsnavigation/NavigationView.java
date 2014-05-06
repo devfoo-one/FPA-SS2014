@@ -1,7 +1,10 @@
 package de.bht.fpa.mail.s798158.fsnavigation;
 
 import java.io.File;
+import java.io.FilenameFilter;
 
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -32,6 +35,38 @@ public class NavigationView extends ViewPart {
     // Here we set the root of the tree. The framework will ask for more data
     // when the user expands tree items.
     viewer.setInput(createModel());
+
+    viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+      @Override
+      public void selectionChanged(SelectionChangedEvent event) {
+        // Event auslesen und mithilfe von SelectionHelper ausgewaehltes Objekt
+        // auf MyFileSystemObject casten
+
+        MyFileSystemObject selectedFSO = SelectionHelper
+            .handleStructuredSelectionEvent(event, MyFileSystemObject.class);
+
+        if (selectedFSO != null) {
+          // FilenameFilter auf xml-Dateien
+          FilenameFilter fileFilter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+              if (name.toLowerCase().endsWith(".xml")) {
+                // pruefen ob es nicht ein Ordner mit dem Name *.xml ist
+                if (new File(dir.getAbsolutePath() + File.separator + name).isFile()) {
+                  return true;
+                }
+              }
+              return false;
+            }
+          };
+          for (final java.io.File element : selectedFSO.file.listFiles(fileFilter)) {
+            // hier xml parsen
+          }
+        }
+      }
+
+    });
   }
 
   /**
