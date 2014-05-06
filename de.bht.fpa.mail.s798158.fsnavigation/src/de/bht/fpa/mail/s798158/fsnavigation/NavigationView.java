@@ -1,7 +1,11 @@
 package de.bht.fpa.mail.s798158.fsnavigation;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.xml.bind.JAXB;
@@ -16,7 +20,7 @@ import org.eclipse.ui.part.ViewPart;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 
 public class NavigationView extends ViewPart {
-  public static final String HISTORYPATH = "history.csv";
+  public static final String HISTORYPATH = System.getProperty("user.home") + File.separator + "FPAMailer_history.csv";
   public static final String ID = "de.bht.fpa.mail.s798158.fsnavigation.NavigationView";
   private TreeViewer viewer;
 
@@ -26,6 +30,7 @@ public class NavigationView extends ViewPart {
    */
   @Override
   public void createPartControl(Composite parent) {
+    System.out.println(HISTORYPATH);
     // a TreeViewer is a Jface widget, which shows trees
     viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 
@@ -94,17 +99,28 @@ public class NavigationView extends ViewPart {
    */
   private Object createModel() {
     File historyFile = new File(HISTORYPATH);
-    if (historyFile.exists() && historyFile.isFile()) {
-      // wenn HistoryFile existiert dann hier weiter
-      // letzte Zeile des HistoryFiles lesen und dann als MyDirectory returnen
+    final BufferedReader history;
+    String lastHistoryRow = null;
+    try {
+      history = new BufferedReader(new FileReader(historyFile));
+      // BufferedReader wegen readLine(), das gibts nich am FileReader
+      String row = null;
+      while ((row = history.readLine()) != null) {
+        lastHistoryRow = row;
+      }
+      history.close();
+    } catch (FileNotFoundException e) {
+      return new MyDirectory(new java.io.File(System.getProperty("user.home")));
+    } catch (IOException e) {
+      System.err.println(e.getMessage());
+    }
+    if (lastHistoryRow != null) {
+      return new MyDirectory(new File(lastHistoryRow));
     } else {
-      // wenn keine Datei existiert dann hier den DefaultPath returnen
-      // Datei soll ja nur geschrieben werden wenn ein Pfad manuell ausgewählt
-      // wurde
+      return new MyDirectory(new java.io.File(System.getProperty("user.home")));
     }
     // Our root item is simply a dummy Object. Here you need to provide your own
     // root class.
-    return new MyDirectory(new java.io.File(System.getProperty("user.home")));
   }
 
   /**
