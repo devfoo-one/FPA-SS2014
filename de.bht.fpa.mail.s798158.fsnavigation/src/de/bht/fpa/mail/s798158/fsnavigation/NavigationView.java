@@ -2,6 +2,9 @@ package de.bht.fpa.mail.s798158.fsnavigation;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
+
+import javax.xml.bind.JAXB;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -9,6 +12,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
+
+import de.bht.fpa.mail.s000000.common.mail.model.Message;
 
 public class NavigationView extends ViewPart {
   public static final String HISTORYPATH = "history.csv";
@@ -42,7 +47,7 @@ public class NavigationView extends ViewPart {
       public void selectionChanged(SelectionChangedEvent event) {
         // Event auslesen und mithilfe von SelectionHelper ausgewaehltes Objekt
         // auf MyFileSystemObject casten
-
+        ArrayList<Message> messageList = new ArrayList<Message>();
         MyFileSystemObject selectedFSO = SelectionHelper
             .handleStructuredSelectionEvent(event, MyFileSystemObject.class);
 
@@ -61,11 +66,26 @@ public class NavigationView extends ViewPart {
             }
           };
           for (final java.io.File element : selectedFSO.file.listFiles(fileFilter)) {
-            // hier xml parsen
+            // XML File mit JAXB einlesen
+            Message message = null;
+            try {
+              message = JAXB.unmarshal(element, Message.class);
+            } catch (Exception e) {
+              System.err.println(e.getMessage());
+            }
+
+            if (message != null && message.getId() != null) {
+              // wenn message.getId() == null dann wohl falsches Format
+              messageList.add(message);
+            }
+          }
+          System.out.println("Selected directory: " + selectedFSO.file.getAbsolutePath());
+          System.out.println("Number of messages: " + messageList.size());
+          for (Message message : messageList) {
+            System.out.println(message);
           }
         }
       }
-
     });
   }
 
