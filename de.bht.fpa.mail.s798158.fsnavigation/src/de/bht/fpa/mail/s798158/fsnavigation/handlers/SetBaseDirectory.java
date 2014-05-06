@@ -1,5 +1,7 @@
 package de.bht.fpa.mail.s798158.fsnavigation.handlers;
 
+import java.io.File;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -7,6 +9,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import de.bht.fpa.mail.s798158.fsnavigation.MyDirectory;
 import de.bht.fpa.mail.s798158.fsnavigation.NavigationView;
 
 /**
@@ -45,8 +48,8 @@ public class SetBaseDirectory extends AbstractHandler {
     if (dir != null) {
       final IWorkbenchPage page = window.getActivePage();
       final NavigationView navView = (NavigationView) page.findView(NavigationView.ID);
-      final java.io.File foo = new java.io.File(dir);
-      navView.updateModel(foo);
+      final MyDirectory newPath = new MyDirectory(new File(dir));
+      navView.updateModel(newPath);
     }
     return null;
   }

@@ -1,11 +1,14 @@
 package de.bht.fpa.mail.s798158.fsnavigation;
 
+import java.io.File;
+
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 public class NavigationView extends ViewPart {
+  public static final String HISTORYPATH = "history.csv";
   public static final String ID = "de.bht.fpa.mail.s798158.fsnavigation.NavigationView";
   private TreeViewer viewer;
 
@@ -35,6 +38,15 @@ public class NavigationView extends ViewPart {
    * We will set up a model to initialize tree hierarchy.
    */
   private Object createModel() {
+    File historyFile = new File(HISTORYPATH);
+    if (historyFile.exists() && historyFile.isFile()) {
+      // wenn HistoryFile existiert dann hier weiter
+      // letzte Zeile des HistoryFiles lesen und dann als MyDirectory returnen
+    } else {
+      // wenn keine Datei existiert dann hier den DefaultPath returnen
+      // Datei soll ja nur geschrieben werden wenn ein Pfad manuell ausgewählt
+      // wurde
+    }
     // Our root item is simply a dummy Object. Here you need to provide your own
     // root class.
     return new MyDirectory(new java.io.File(System.getProperty("user.home")));
@@ -48,8 +60,8 @@ public class NavigationView extends ViewPart {
     viewer.getControl().setFocus();
   }
 
-  public void updateModel(java.io.File arg) {
-    viewer.setInput(new MyDirectory(arg));
+  public void updateModel(MyFileSystemObject arg) {
+    viewer.setInput(arg);
     viewer.refresh();
   }
 }
