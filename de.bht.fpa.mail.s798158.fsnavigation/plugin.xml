@@ -39,8 +39,8 @@
       </category>
       <command
             categoryId="de.bht.fpa.mail.s798158.fsnavigation.commands.category"
-            id="de.bht.fpa.mail.s798158.fsnavigation.commands.sampleCommand"
-            name="Sample Command">
+            id="de.bht.fpa.mail.s798158.fsnavigation.commands.getHistoryBaseDirectory"
+            name="History...">
       </command>
    </extension>
    <extension
@@ -50,8 +50,8 @@
             commandId="de.bht.fpa.mail.s798158.fsnavigation.commands.SetBaseDirectory">
       </handler>
       <handler
-            class="de.bht.fpa.mail.s798158.fsnavigation.getHistoryBaseDirectory.getHistoryBaseDirectory"
-            commandId="de.bht.fpa.mail.s798158.fsnavigation.commands.sampleCommand">
+            class="de.bht.fpa.mail.s798158.fsnavigation.handlers.getHistoryBaseDirectory"
+            commandId="de.bht.fpa.mail.s798158.fsnavigation.commands.getHistoryBaseDirectory">
       </handler>
    </extension>
    <extension
@@ -63,10 +63,10 @@
             sequence="M1+6">
       </key>
       <key
-            commandId="de.bht.fpa.mail.s798158.fsnavigation.commands.sampleCommand"
+            commandId="de.bht.fpa.mail.s798158.fsnavigation.commands.getHistoryBaseDirectory"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+6">
+            sequence="M1+7">
       </key>
    </extension>
    <extension
@@ -79,7 +79,7 @@
                mnemonic="M">
             <command
                   commandId="de.bht.fpa.mail.s798158.fsnavigation.commands.SetBaseDirectory"
-                  id="de.bht.fpa.mail.s798158.fsnavigation.menus.sampleCommand"
+                  id="de.bht.fpa.mail.s798158.fsnavigation.menus.SetBaseDirectory"
                   mnemonic="S">
             </command>
          </menu>
@@ -103,8 +103,8 @@
                label="Sample Menu"
                mnemonic="M">
             <command
-                  commandId="de.bht.fpa.mail.s798158.fsnavigation.commands.sampleCommand"
-                  id="de.bht.fpa.mail.s798158.fsnavigation.menus.sampleCommand"
+                  commandId="de.bht.fpa.mail.s798158.fsnavigation.commands.getHistoryBaseDirectory"
+                  id="de.bht.fpa.mail.s798158.fsnavigation.menus.getHistoryBaseDirectory"
                   mnemonic="S">
             </command>
          </menu>
@@ -114,7 +114,7 @@
          <toolbar
                id="de.bht.fpa.mail.s798158.fsnavigation.toolbars.sampleToolbar">
             <command
-                  commandId="de.bht.fpa.mail.s798158.fsnavigation.commands.sampleCommand"
+                  commandId="de.bht.fpa.mail.s798158.fsnavigation.commands.getHistoryBaseDirectory"
                   icon="icons/sample.gif"
                   id="de.bht.fpa.mail.s798158.fsnavigation.toolbars.sampleCommand"
                   tooltip="Say hello world">

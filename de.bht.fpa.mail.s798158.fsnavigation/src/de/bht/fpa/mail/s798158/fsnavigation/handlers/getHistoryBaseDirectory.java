@@ -1,4 +1,4 @@
-package de.bht.fpa.mail.s798158.fsnavigation.getHistoryBaseDirectory;
+package de.bht.fpa.mail.s798158.fsnavigation.handlers;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
