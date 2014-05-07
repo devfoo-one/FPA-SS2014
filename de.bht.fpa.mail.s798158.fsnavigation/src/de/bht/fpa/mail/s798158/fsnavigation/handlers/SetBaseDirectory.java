@@ -1,10 +1,6 @@
 package de.bht.fpa.mail.s798158.fsnavigation.handlers;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -50,24 +46,6 @@ public class SetBaseDirectory extends AbstractHandler {
       final MyDirectory newPath = new MyDirectory(new File(dir));
       navView.updateModel(newPath);
 
-      BufferedWriter history;
-      final File historyFile = new File(NavigationView.HISTORYPATH);
-      try {
-        history = new BufferedWriter(new FileWriter(historyFile));
-        history.append(dir);
-        history.append(System.getProperty("line.separator"));
-        history.close();
-      } catch (IOException e) {
-        try {
-          historyFile.createNewFile();
-          history = new BufferedWriter(new FileWriter(historyFile));
-          history.append(dir);
-          history.append(System.getProperty("line.separator"));
-          history.close();
-        } catch (IOException e1) {
-          System.err.println("could not create path-history file. " + e.getMessage());
-        }
-      }
     }
     return null;
   }

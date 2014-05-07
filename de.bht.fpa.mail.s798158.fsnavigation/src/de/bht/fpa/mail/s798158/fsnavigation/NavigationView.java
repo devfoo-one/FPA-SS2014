@@ -1,9 +1,11 @@
 package de.bht.fpa.mail.s798158.fsnavigation;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +32,6 @@ public class NavigationView extends ViewPart {
    */
   @Override
   public void createPartControl(Composite parent) {
-    System.out.println(HISTORYPATH);
     // a TreeViewer is a Jface widget, which shows trees
     viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 
@@ -134,5 +135,25 @@ public class NavigationView extends ViewPart {
   public void updateModel(MyFileSystemObject arg) {
     viewer.setInput(arg);
     viewer.refresh();
+    BufferedWriter history;
+    final File historyFile = new File(NavigationView.HISTORYPATH);
+    try {
+      history = new BufferedWriter(new FileWriter(historyFile, true));
+      // true am FileWriter fuer append
+      // http://beginnersbook.com/2014/01/how-to-append-to-a-file-in-java/
+      history.write(arg.file.getAbsolutePath());
+      history.newLine();
+      history.close();
+    } catch (IOException e) {
+      try {
+        historyFile.createNewFile();
+        history = new BufferedWriter(new FileWriter(historyFile, true));
+        history.write(arg.file.getAbsolutePath());
+        history.newLine();
+        history.close();
+      } catch (IOException e1) {
+        System.err.println("could not create path-history file. " + e.getMessage());
+      }
+    }
   }
 }

@@ -50,7 +50,7 @@
             commandId="de.bht.fpa.mail.s798158.fsnavigation.commands.SetBaseDirectory">
       </handler>
       <handler
-            class="de.bht.fpa.mail.s798158.fsnavigation.handlers.getHistoryBaseDirectory"
+            class="de.bht.fpa.mail.s798158.fsnavigation.handlers.GetHistoryBaseDirectory"
             commandId="de.bht.fpa.mail.s798158.fsnavigation.commands.getHistoryBaseDirectory">
       </handler>
    </extension>
