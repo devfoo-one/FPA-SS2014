@@ -8,6 +8,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import de.bht.fpa.mail.s798158.fsnavigation.MyDirectory;
 import de.bht.fpa.mail.s798158.fsnavigation.NavigationView;
 
 /**
@@ -35,7 +36,10 @@ public class GetHistoryBaseDirectory extends AbstractHandler {
     if (dialog.open() == Window.OK) {
       final IWorkbenchPage page = window.getActivePage();
       final NavigationView navView = (NavigationView) page.findView(NavigationView.ID);
-      navView.updateModel(dialog.getSelectedDirectory());
+      MyDirectory selectedDirectory = dialog.getSelectedDirectory();
+      if (selectedDirectory != null && selectedDirectory instanceof MyDirectory) {
+        navView.updateModel(dialog.getSelectedDirectory());
+      }
     }
 
     return null;

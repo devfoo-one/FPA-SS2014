@@ -31,4 +31,40 @@ public abstract class MyFileSystemObject {
     return this.file.getAbsolutePath();
   }
 
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    int filehashcode;
+    if (file == null) {
+      filehashcode = 0;
+    } else {
+      filehashcode = file.hashCode();
+    }
+    result = prime * result + filehashcode;
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj instanceof MyFileSystemObject)) {
+      return false;
+    }
+    MyFileSystemObject other = (MyFileSystemObject) obj;
+    if (file == null) {
+      if (other.file != null) {
+        return false;
+      }
+    } else if (!file.equals(other.file)) {
+      return false;
+    }
+    return true;
+  }
+
 }

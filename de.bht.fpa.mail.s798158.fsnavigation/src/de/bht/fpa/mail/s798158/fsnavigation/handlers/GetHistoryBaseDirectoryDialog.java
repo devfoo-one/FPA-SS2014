@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -78,12 +78,13 @@ public class GetHistoryBaseDirectoryDialog extends Dialog {
   private Object[] getHistoryEntries() {
     File historyFile = new File(NavigationView.HISTORYPATH);
     final BufferedReader history;
-    final ArrayList<MyDirectory> historyDirectories = new ArrayList<MyDirectory>();
+    // HashSet vermeidet doppelte Eintraege
+    final HashSet<MyDirectory> historyDirectories = new HashSet<MyDirectory>();
     try {
       history = new BufferedReader(new FileReader(historyFile));
       // BufferedReader wegen readLine(), das gibts nich am FileReader
       String row = null;
-      while ((row = history.readLine()) != null) {
+      while ((row = history.readLine()) != null && row.length() > 0) {
         historyDirectories.add(new MyDirectory(new File(row)));
       }
       history.close();
