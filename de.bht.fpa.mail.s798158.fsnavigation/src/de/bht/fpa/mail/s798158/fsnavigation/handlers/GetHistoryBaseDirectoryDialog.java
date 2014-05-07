@@ -42,7 +42,7 @@ public class GetHistoryBaseDirectoryDialog extends Dialog {
       public String getText(Object element) {
         if (element instanceof MyDirectory) {
           MyDirectory dir = (MyDirectory) element;
-          return dir.file.getAbsolutePath();
+          return dir.getFile().getAbsolutePath();
         } else {
           return "No base directories in history";
         }

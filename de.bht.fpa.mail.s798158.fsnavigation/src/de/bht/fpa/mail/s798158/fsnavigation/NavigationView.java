@@ -71,7 +71,7 @@ public class NavigationView extends ViewPart {
               return false;
             }
           };
-          for (final java.io.File element : selectedFSO.file.listFiles(fileFilter)) {
+          for (final java.io.File element : selectedFSO.getFile().listFiles(fileFilter)) {
             // XML File mit JAXB einlesen
             Message message = null;
             try {
@@ -85,7 +85,7 @@ public class NavigationView extends ViewPart {
               messageList.add(message);
             }
           }
-          System.out.println("Selected directory: " + selectedFSO.file.getAbsolutePath());
+          System.out.println("Selected directory: " + selectedFSO.getFile().getAbsolutePath());
           System.out.println("Number of messages: " + messageList.size());
           for (Message message : messageList) {
             System.out.println(message);
@@ -141,14 +141,14 @@ public class NavigationView extends ViewPart {
       history = new BufferedWriter(new FileWriter(historyFile, true));
       // true am FileWriter fuer append
       // http://beginnersbook.com/2014/01/how-to-append-to-a-file-in-java/
-      history.write(arg.file.getAbsolutePath());
+      history.write(arg.getFile().getAbsolutePath());
       history.newLine();
       history.close();
     } catch (IOException e) {
       try {
         historyFile.createNewFile();
         history = new BufferedWriter(new FileWriter(historyFile, true));
-        history.write(arg.file.getAbsolutePath());
+        history.write(arg.getFile().getAbsolutePath());
         history.newLine();
         history.close();
       } catch (IOException e1) {

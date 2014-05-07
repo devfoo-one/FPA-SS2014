@@ -20,7 +20,7 @@ public class MyDirectory extends MyFileSystemObject {
       }
     };
 
-    return file.listFiles(fileFilter) != null && file.listFiles(fileFilter).length > 0;
+    return this.getFile().listFiles(fileFilter) != null && this.getFile().listFiles(fileFilter).length > 0;
   }
 
   @Override
@@ -34,7 +34,7 @@ public class MyDirectory extends MyFileSystemObject {
       }
     };
 
-    for (final java.io.File element : file.listFiles(fileFilter)) {
+    for (final java.io.File element : this.getFile().listFiles(fileFilter)) {
       if (element.isDirectory()) {
         result.add(new MyDirectory(element));
       }

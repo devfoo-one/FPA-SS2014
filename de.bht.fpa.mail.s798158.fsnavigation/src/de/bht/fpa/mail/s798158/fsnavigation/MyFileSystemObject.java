@@ -1,9 +1,10 @@
 package de.bht.fpa.mail.s798158.fsnavigation;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public abstract class MyFileSystemObject {
-  public final java.io.File file;
+  private final java.io.File file;
 
   public MyFileSystemObject(final java.io.File file) {
     this.file = file;
@@ -21,8 +22,13 @@ public abstract class MyFileSystemObject {
     return file.getName();
   }
 
+  public File getFile() {
+    return file;
+  }
+
   @Override
   public String toString() {
     return this.file.getAbsolutePath();
   }
+
 }
