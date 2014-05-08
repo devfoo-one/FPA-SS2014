@@ -34,14 +34,18 @@ public class MyDirectory extends MyFileSystemObject {
       }
     };
 
-    for (final java.io.File element : this.getFile().listFiles(fileFilter)) {
-      if (element.isDirectory()) {
-        result.add(new MyDirectory(element));
-      }
-      if (element.isFile()) {
-        result.add(new MyFile(element));
+    final File[] fileList = this.getFile().listFiles(fileFilter);
+    if (fileList != null) {
+      for (final java.io.File element : fileList) {
+        if (element.isDirectory()) {
+          result.add(new MyDirectory(element));
+        }
+        if (element.isFile()) {
+          result.add(new MyFile(element));
+        }
       }
     }
+
     return result;
   }
 

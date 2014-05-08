@@ -84,8 +84,10 @@ public class GetHistoryBaseDirectoryDialog extends Dialog {
       history = new BufferedReader(new FileReader(historyFile));
       // BufferedReader wegen readLine(), das gibts nich am FileReader
       String row = null;
-      while ((row = history.readLine()) != null && row.length() > 0) {
+      row = history.readLine();
+      while (row != null && row.length() > 0) {
         historyDirectories.add(new MyDirectory(new File(row)));
+        row = history.readLine();
       }
       history.close();
     } catch (FileNotFoundException e) {
