@@ -1,10 +1,16 @@
 package de.bht.fpa.mail.s798158.maillist;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+
+import javax.xml.bind.JAXB;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
@@ -19,11 +25,13 @@ import de.ralfebert.rcputils.tables.format.Formatter;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 import de.bht.fpa.mail.s000000.common.mail.model.Recipient;
 import de.bht.fpa.mail.s000000.common.table.MessageValues;
+import de.bht.fpa.mail.s798158.fsnavigation.MyFileSystemObject;
+import de.bht.fpa.mail.s798158.fsnavigation.NavigationView;
+import de.bht.fpa.mail.s798158.fsnavigation.SelectionHelper;
 
 public class MailListView extends ViewPart {
 
   private TableViewer tableviewer;
-  private static final int NUM_MESSAGES = 50;
   private static final int IMPORTANCE_COLUMN_WIDTH = 70;
   private static final int RECEIVED_COLUMN_WIDTH = 90;
   private static final int READ_COLUMN_WIDTH = 40;
@@ -32,11 +40,47 @@ public class MailListView extends ViewPart {
   private static final int SUBJECT_COLUMN_WIDTH = 320;
 
   // Aufgabe 6
-  ISelectionListener listener = new ISelectionListener() {
+  private final ISelectionListener listener = new ISelectionListener() {
     @Override
     public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-      System.out.println("ICH FUNKTIONIER SO KRASS!!!");
-      System.out.println(selection);
+      // pruefen ob die Selection vom NavigationView kommt usw...
+      if (part instanceof NavigationView && selection != null && selection instanceof TreeSelection) {
+        MyFileSystemObject selectedFSO = SelectionHelper.handleStructuredSelection(selection, MyFileSystemObject.class);
+        ArrayList<Message> messageList = new ArrayList<Message>();
+        // FilenameFilter auf xml-Dateien
+        FilenameFilter fileFilter = new FilenameFilter() {
+          @Override
+          public boolean accept(File dir, String name) {
+            if (name.toLowerCase().endsWith(".xml")) {
+              // pruefen ob es nicht ein Ordner mit dem Name *.xml ist
+              if (new File(dir.getAbsolutePath() + File.separator + name).isFile()) {
+                return true;
+              }
+            }
+            return false;
+          }
+        };
+
+        if (selectedFSO != null) {
+          for (final java.io.File element : selectedFSO.getFile().listFiles(fileFilter)) {
+            // XML File mit JAXB einlesen
+            Message message = null;
+            try {
+              message = JAXB.unmarshal(element, Message.class);
+            } catch (Exception e) {
+              System.err.println(e.getMessage());
+            }
+
+            if (message != null && message.getId() != null) {
+              // wenn message.getId() == null dann wohl falsches Format
+              messageList.add(message);
+            }
+          }
+        }
+
+        tableviewer.setInput(messageList);
+        tableviewer.refresh();
+      }
     }
   };
 

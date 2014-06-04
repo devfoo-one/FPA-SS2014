@@ -88,10 +88,11 @@ public class NavigationView extends ViewPart {
               messageList.add(message);
             }
           }
-          System.out.println("Selected directory: " + selectedFSO.getFile().getAbsolutePath());
-          System.out.println("Number of messages: " + messageList.size());
+          // System.out.println("Selected directory: " +
+          // selectedFSO.getFile().getAbsolutePath());
+          // System.out.println("Number of messages: " + messageList.size());
           for (Message message : messageList) {
-            System.out.println(message);
+            // System.out.println(message);
           }
         }
       }
