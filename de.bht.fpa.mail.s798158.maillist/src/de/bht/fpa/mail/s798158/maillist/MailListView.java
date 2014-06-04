@@ -3,9 +3,12 @@ package de.bht.fpa.mail.s798158.maillist;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ralfebert.rcputils.properties.BaseValue;
@@ -28,8 +31,20 @@ public class MailListView extends ViewPart {
   private static final int RECIPIENTS_COLUMN_WIDTH = 175;
   private static final int SUBJECT_COLUMN_WIDTH = 320;
 
+  // Aufgabe 6
+  ISelectionListener listener = new ISelectionListener() {
+    @Override
+    public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+      System.out.println("ICH FUNKTIONIER SO KRASS!!!");
+      System.out.println(selection);
+    }
+  };
+
   @Override
   public void createPartControl(Composite parent) {
+
+    // Aufgabe 6
+    getSite().getPage().addSelectionListener(listener);
 
     // Table in das Composite packen, dann müsste auch ein Input funktionieren
     // final Composite searchComposite = new Composite(parent, SWT.VERTICAL);
@@ -97,12 +112,17 @@ public class MailListView extends ViewPart {
     // searchLabel.setText("Search:");
     // final Text foo = new Text(searchComposite, SWT.NONE);
     // searchLabel.setVisible(true);
+
   }
 
   @Override
   public void setFocus() {
     tableviewer.getTable().setFocus();
+  }
 
+  @Override
+  public void dispose() {
+    getSite().getPage().removeSelectionListener(listener);
   }
 
 }

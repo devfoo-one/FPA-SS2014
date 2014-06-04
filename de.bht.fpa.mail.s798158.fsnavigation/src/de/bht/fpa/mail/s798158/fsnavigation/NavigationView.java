@@ -47,6 +47,9 @@ public class NavigationView extends ViewPart {
     // when the user expands tree items.
     viewer.setInput(createModel());
 
+    // Aufgabe 6, SelectionProvider festlegen
+    this.getSite().setSelectionProvider(viewer);
+
     viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
       @Override
