@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
@@ -12,7 +13,6 @@ import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.ColumnBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
 
-import de.bht.fpa.mail.s000000.common.mail.testdata.RandomTestDataProvider;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 import de.bht.fpa.mail.s000000.common.mail.model.Recipient;
 import de.bht.fpa.mail.s000000.common.table.MessageValues;
@@ -31,26 +31,29 @@ public class MailListView extends ViewPart {
   @Override
   public void createPartControl(Composite parent) {
 
-    TableViewerBuilder t = new TableViewerBuilder(parent);
+    // Table in das Composite packen, dann müsste auch ein Input funktionieren
+    // final Composite searchComposite = new Composite(parent, SWT.VERTICAL);
+    final Composite tableComposite = new Composite(parent, SWT.VERTICAL);
+    final TableViewerBuilder t = new TableViewerBuilder(tableComposite);
 
-    ColumnBuilder colImportance = t.createColumn("Importance");
+    final ColumnBuilder colImportance = t.createColumn("Importance");
     colImportance.bindToValue(MessageValues.IMPORTANCE);
     colImportance.setPixelWidth(IMPORTANCE_COLUMN_WIDTH);
     colImportance.build();
 
-    ColumnBuilder colReceived = t.createColumn("Received");
+    final ColumnBuilder colReceived = t.createColumn("Received");
     colReceived.useAsDefaultSortColumn();
     colReceived.bindToValue(MessageValues.RECEIVED);
     colReceived.format(Formatter.forDate(new SimpleDateFormat("dd.MM.yyyy")));
     colReceived.setPixelWidth(RECEIVED_COLUMN_WIDTH);
     colReceived.build();
 
-    ColumnBuilder colRead = t.createColumn("Read");
+    final ColumnBuilder colRead = t.createColumn("Read");
     colRead.bindToValue(MessageValues.READ);
     colRead.setPixelWidth(READ_COLUMN_WIDTH);
     colRead.build();
 
-    ColumnBuilder colSender = t.createColumn("Sender");
+    final ColumnBuilder colSender = t.createColumn("Sender");
     colSender.bindToValue(MessageValues.SENDER);
     colSender.bindToValue(new BaseValue<Message>() {
       @Override
@@ -61,7 +64,7 @@ public class MailListView extends ViewPart {
     colSender.setPixelWidth(SENDER_COLUMN_WIDTH);
     colSender.build();
 
-    ColumnBuilder colRecipients = t.createColumn("Recipients");
+    final ColumnBuilder colRecipients = t.createColumn("Recipients");
     colRecipients.bindToValue(new BaseValue<Message>() {
       @Override
       public Object get(Message message) {
@@ -78,16 +81,22 @@ public class MailListView extends ViewPart {
     colRecipients.setPixelWidth(RECIPIENTS_COLUMN_WIDTH);
     colRecipients.build();
 
-    ColumnBuilder colSubject = t.createColumn("Subject");
+    final ColumnBuilder colSubject = t.createColumn("Subject");
     colSubject.bindToValue(MessageValues.SUBJECT);
     colSubject.setPixelWidth(SUBJECT_COLUMN_WIDTH);
     colSubject.build();
 
-    Collection<Message> messages = new RandomTestDataProvider(NUM_MESSAGES).getMessages();
-
+    // Collection<Message> messages = new
+    // RandomTestDataProvider(NUM_MESSAGES).getMessages();
+    Collection<Message> messages = null;
     t.setInput(messages);
     tableviewer = t.getTableViewer();
 
+    // die restlichen Felder ins Composite kippen
+    // final Label searchLabel = new Label(searchComposite, SWT.NONE);
+    // searchLabel.setText("Search:");
+    // final Text foo = new Text(searchComposite, SWT.NONE);
+    // searchLabel.setVisible(true);
   }
 
   @Override
