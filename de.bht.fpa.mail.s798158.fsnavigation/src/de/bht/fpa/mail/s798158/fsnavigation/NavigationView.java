@@ -51,7 +51,6 @@ public class NavigationView extends ViewPart {
     this.getSite().setSelectionProvider(viewer);
 
     viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-
       @Override
       public void selectionChanged(SelectionChangedEvent event) {
         // Event auslesen und mithilfe von SelectionHelper ausgewaehltes Objekt

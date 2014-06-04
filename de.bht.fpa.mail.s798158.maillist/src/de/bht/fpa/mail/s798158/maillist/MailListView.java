@@ -43,6 +43,8 @@ public class MailListView extends ViewPart {
   private final ISelectionListener listener = new ISelectionListener() {
     @Override
     public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+      System.out.println(part);
+      System.out.println(selection);
       // pruefen ob die Selection vom NavigationView kommt usw...
       if (part instanceof NavigationView && selection != null && selection instanceof TreeSelection) {
         MyFileSystemObject selectedFSO = SelectionHelper.handleStructuredSelection(selection, MyFileSystemObject.class);
@@ -77,7 +79,6 @@ public class MailListView extends ViewPart {
             }
           }
         }
-
         tableviewer.setInput(messageList);
         tableviewer.refresh();
       }
@@ -88,6 +89,7 @@ public class MailListView extends ViewPart {
   public void createPartControl(Composite parent) {
 
     // Aufgabe 6
+
     getSite().getPage().addSelectionListener(listener);
 
     // Table in das Composite packen, dann müsste auch ein Input funktionieren
@@ -150,6 +152,9 @@ public class MailListView extends ViewPart {
     Collection<Message> messages = null;
     t.setInput(messages);
     tableviewer = t.getTableViewer();
+
+    // Aufgabe 6
+    getSite().setSelectionProvider(tableviewer);
 
     // die restlichen Felder ins Composite kippen
     // final Label searchLabel = new Label(searchComposite, SWT.NONE);
