@@ -5,20 +5,20 @@
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="*">
-         <view
-               id="de.bht.fpa.mail.s798158.maillist.MailListView"
+            <view
+               id="de.bht.fpa.mail.s798158.mailview.messagedetails"
                minimized="false"
                relationship="stack"
-               relative="de.bht.fpa.mail.s798158.main.perspective.top">
+               relative="de.bht.fpa.mail.s798158.main.perspective.bottom">
          </view>
       </perspectiveExtension>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="de.bht.fpa.mail.s798158.maillist.MailListView"
-            id="de.bht.fpa.mail.s798158.maillist.MailListView"
-            name="MailList"
+            class="de.bht.fpa.mail.s000000.common.mail.messagedetails.MessageView"
+            id="de.bht.fpa.mail.s798158.mailview.messagedetails"
+            name="Message"
             restorable="true">
       </view>
    </extension>
