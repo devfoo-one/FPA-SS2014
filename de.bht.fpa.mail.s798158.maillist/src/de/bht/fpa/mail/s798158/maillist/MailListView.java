@@ -43,8 +43,6 @@ public class MailListView extends ViewPart {
   private final ISelectionListener listener = new ISelectionListener() {
     @Override
     public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-      System.out.println(part);
-      System.out.println(selection);
       // pruefen ob die Selection vom NavigationView kommt usw...
       if (part instanceof NavigationView && selection != null && selection instanceof TreeSelection) {
         MyFileSystemObject selectedFSO = SelectionHelper.handleStructuredSelection(selection, MyFileSystemObject.class);
