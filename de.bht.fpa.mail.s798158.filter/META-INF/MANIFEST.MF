@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Filter
+Bundle-SymbolicName: de.bht.fpa.mail.s798158.filter
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.bht.fpa.mail.s000000.common.filter,
+ de.bht.fpa.mail.s000000.common.mail.model
