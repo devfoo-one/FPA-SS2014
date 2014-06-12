@@ -8,12 +8,12 @@ import de.bht.fpa.mail.s000000.common.filter.IFilter;
 import de.bht.fpa.mail.s000000.common.filter.StringCompareHelper;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 
-public class Sender implements IFilter {
+public class SenderFilter implements IFilter {
 
   private final String filterText;
   private final FilterOperator filterMode;
 
-  public Sender(final String filterText, final FilterOperator filterMode) {
+  public SenderFilter(final String filterText, final FilterOperator filterMode) {
     if (filterText == null || filterText.equals("")) {
       throw new IllegalArgumentException("could not create filter. filterString is empty.");
     }

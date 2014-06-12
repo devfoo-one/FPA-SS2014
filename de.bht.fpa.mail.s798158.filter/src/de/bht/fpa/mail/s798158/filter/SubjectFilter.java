@@ -8,12 +8,12 @@ import de.bht.fpa.mail.s000000.common.filter.IFilter;
 import de.bht.fpa.mail.s000000.common.filter.StringCompareHelper;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 
-public class Text implements IFilter {
+public class SubjectFilter implements IFilter {
 
   private final String filterText;
   private final FilterOperator filterMode;
 
-  public Text(final String filterText, final FilterOperator filterMode) {
+  public SubjectFilter(final String filterText, final FilterOperator filterMode) {
     if (filterText == null || filterText.equals("")) {
       throw new IllegalArgumentException("could not create filter. filterString is empty.");
     }
@@ -31,7 +31,7 @@ public class Text implements IFilter {
     }
     final Set<Message> returnSet = new HashSet<Message>();
     for (final Message m : messagesToFilter) {
-      if (StringCompareHelper.matches(m.getText(), this.filterText, this.filterMode)) {
+      if (StringCompareHelper.matches(m.getSubject(), this.filterText, this.filterMode)) {
         returnSet.add(m);
       }
     }

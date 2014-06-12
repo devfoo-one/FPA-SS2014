@@ -5,12 +5,16 @@ import java.util.Set;
 
 import de.bht.fpa.mail.s000000.common.filter.IFilter;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
+import de.bht.fpa.mail.s000000.common.mail.model.Importance;
 
-public class Read implements IFilter {
+public class ImportanceFilter implements IFilter {
 
-  private final boolean filter;
+  private final Importance filter;
 
-  public Read(final boolean filter) {
+  public ImportanceFilter(final Importance filter) {
+    if (filter == null) {
+      throw new IllegalArgumentException("could not create filter. Importance is null");
+    }
     this.filter = filter;
   }
 
@@ -21,7 +25,7 @@ public class Read implements IFilter {
     }
     final Set<Message> returnSet = new HashSet<Message>();
     for (final Message m : messagesToFilter) {
-      if (m.isRead() == filter) {
+      if (m.getImportance() == filter) {
         returnSet.add(m);
       }
     }

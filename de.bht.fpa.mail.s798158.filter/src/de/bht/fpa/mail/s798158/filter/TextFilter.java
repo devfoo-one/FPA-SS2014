@@ -7,14 +7,13 @@ import de.bht.fpa.mail.s000000.common.filter.FilterOperator;
 import de.bht.fpa.mail.s000000.common.filter.IFilter;
 import de.bht.fpa.mail.s000000.common.filter.StringCompareHelper;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
-import de.bht.fpa.mail.s000000.common.mail.model.Recipient;
 
-public class Recipients implements IFilter {
+public class TextFilter implements IFilter {
 
   private final String filterText;
   private final FilterOperator filterMode;
 
-  public Recipients(final String filterText, final FilterOperator filterMode) {
+  public TextFilter(final String filterText, final FilterOperator filterMode) {
     if (filterText == null || filterText.equals("")) {
       throw new IllegalArgumentException("could not create filter. filterString is empty.");
     }
@@ -32,11 +31,8 @@ public class Recipients implements IFilter {
     }
     final Set<Message> returnSet = new HashSet<Message>();
     for (final Message m : messagesToFilter) {
-      for (final Recipient recipient : m.getRecipients()) {
-        if (StringCompareHelper.matches(recipient.getEmail(), this.filterText, this.filterMode)
-            || StringCompareHelper.matches(recipient.getPersonal(), this.filterText, this.filterMode)) {
-          returnSet.add(m);
-        }
+      if (StringCompareHelper.matches(m.getText(), this.filterText, this.filterMode)) {
+        returnSet.add(m);
       }
     }
     return returnSet;
