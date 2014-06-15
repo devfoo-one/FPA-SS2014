@@ -15,7 +15,7 @@ public class RecipientsFilter implements IFilter {
   private final FilterOperator filterMode;
 
   public RecipientsFilter(final String filterText, final FilterOperator filterMode) {
-    if (filterText == null || filterText.equals("")) {
+    if (filterText == null) {
       throw new IllegalArgumentException("could not create filter. filterString is empty.");
     }
     if (filterMode == null) {
