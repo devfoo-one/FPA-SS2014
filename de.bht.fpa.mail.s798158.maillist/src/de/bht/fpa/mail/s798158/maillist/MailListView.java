@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.xml.bind.JAXB;
 
@@ -131,7 +132,7 @@ public class MailListView extends ViewPart implements IExecutionListener {
     colSender.bindToValue(new BaseValue<Message>() {
       @Override
       public Object get(Message message) {
-        return message.getSender().getEmail();
+        return message.getSender().getEmail() + "<" + message.getSender().getPersonal() + ">";
       }
     });
     colSender.setPixelWidth(SENDER_COLUMN_WIDTH);
@@ -145,7 +146,7 @@ public class MailListView extends ViewPart implements IExecutionListener {
         final String seperator = ", ";
         String recipientString = "";
         for (Recipient r : message.getRecipients()) {
-          recipientString += r.getEmail() + seperator;
+          recipientString += r.getEmail() + "<" + r.getPersonal() + ">" + seperator;
         }
         // remove last seperator
         return recipientString.substring(0, recipientString.length() - seperator.length());
@@ -188,24 +189,41 @@ public class MailListView extends ViewPart implements IExecutionListener {
 
   @Override
   public void notHandled(String commandId, NotHandledException exception) {
-    // TODO Auto-generated method stub
   }
 
   @Override
   public void postExecuteFailure(String commandId, ExecutionException exception) {
-    // TODO Auto-generated method stub
   }
 
   @Override
   public void postExecuteSuccess(String commandId, Object returnValue) {
-    System.out.println(this + ".postExecuteSuccess"); // TODO DEBUG
     if (returnValue instanceof IFilter) {
+
+      /*
+       * aktuellen Filter löschen. ziemlich hässlich, eventuell geht das noch
+       * hübscher.
+       */
+      ViewerFilter emptyFilter = new ViewerFilter() {
+        @Override
+        public boolean select(Viewer viewer, Object parentElement, Object element) {
+          return true;
+        }
+      };
+      ViewerFilter[] emptyFilters = new ViewerFilter[1];
+      emptyFilters[0] = emptyFilter;
+      tableviewer.setFilters(emptyFilters);
+
+      // wenn ein Filter kam dann hier den Filter laden
       final IFilter filter = (IFilter) returnValue;
-      System.out.println(filter); // TODO DEBUG
       tableviewer.addFilter(new ViewerFilter() {
         @Override
         public boolean select(Viewer viewer, Object parentElement, Object element) {
-          // TODO IMPLEMENT ME
+          // input aus dem viewer holen (muss hier sein wegen Aktualisierungen)
+          final Collection<Message> messagesToFilter = (Collection<Message>) viewer.getInput();
+          final Set<Message> filteredMessages = filter.filter(messagesToFilter);
+          if (filteredMessages.contains(element)) {
+            return true;
+          }
           return false;
         }
       });
