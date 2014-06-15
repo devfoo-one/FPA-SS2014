@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="de.bht.fpa.mail.s798158.filter.commands.category"
+            name="Filter">
+      </category>
+      <command
+            categoryId="de.bht.fpa.mail.s798158.filter.commands.category"
+            id="de.bht.fpa.mail.s798158.filter.commands.sampleCommand"
+            name="Configure Filter...">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.bht.fpa.mail.s798158.filter.handlers.ConfigureFilterHandler"
+            commandId="de.bht.fpa.mail.s798158.filter.commands.sampleCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="de.bht.fpa.mail.s798158.filter.commands.sampleCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+8">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               id="de.bht.fpa.mail.s798158.filter.menus.sampleMenu"
+               label="Filter"
+               mnemonic="F">
+            <command
+                  commandId="de.bht.fpa.mail.s798158.filter.commands.sampleCommand"
+                  id="de.bht.fpa.mail.s798158.filter.menus.sampleCommand"
+                  mnemonic="C">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="de.bht.fpa.mail.s798158.filter.toolbars.sampleToolbar">
+            <command
+                  commandId="de.bht.fpa.mail.s798158.filter.commands.sampleCommand"
+                  icon="icons/sample.gif"
+                  id="de.bht.fpa.mail.s798158.filter.toolbars.sampleCommand"
+                  tooltip="Configure Filter...">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+
+</plugin>

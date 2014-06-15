@@ -8,6 +8,10 @@ import java.util.Collection;
 
 import javax.xml.bind.JAXB;
 
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.IExecutionListener;
+import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -29,7 +33,7 @@ import de.bht.fpa.mail.s798158.fsnavigation.MyFileSystemObject;
 import de.bht.fpa.mail.s798158.fsnavigation.NavigationView;
 import de.bht.fpa.mail.s798158.fsnavigation.SelectionHelper;
 
-public class MailListView extends ViewPart {
+public class MailListView extends ViewPart implements IExecutionListener {
 
   private TableViewer tableviewer;
   private static final int IMPORTANCE_COLUMN_WIDTH = 70;
@@ -170,6 +174,30 @@ public class MailListView extends ViewPart {
   @Override
   public void dispose() {
     getSite().getPage().removeSelectionListener(listener);
+  }
+
+  @Override
+  public void notHandled(String commandId, NotHandledException exception) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void postExecuteFailure(String commandId, ExecutionException exception) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void postExecuteSuccess(String commandId, Object returnValue) {
+    System.out.println(this + ".postExecuteSuccess");
+
+  }
+
+  @Override
+  public void preExecute(String commandId, ExecutionEvent event) {
+    // TODO Auto-generated method stub
+
   }
 
 }
