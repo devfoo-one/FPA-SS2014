@@ -15,10 +15,15 @@ import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ralfebert.rcputils.properties.BaseValue;
@@ -29,6 +34,7 @@ import de.ralfebert.rcputils.tables.format.Formatter;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 import de.bht.fpa.mail.s000000.common.mail.model.Recipient;
 import de.bht.fpa.mail.s000000.common.table.MessageValues;
+import de.bht.fpa.mail.s000000.common.filter.IFilter;
 import de.bht.fpa.mail.s798158.fsnavigation.MyFileSystemObject;
 import de.bht.fpa.mail.s798158.fsnavigation.NavigationView;
 import de.bht.fpa.mail.s798158.fsnavigation.SelectionHelper;
@@ -90,8 +96,12 @@ public class MailListView extends ViewPart implements IExecutionListener {
   @Override
   public void createPartControl(Composite parent) {
 
-    // Aufgabe 6
+    // Aufgabe 8
+    final IWorkbench workbench = PlatformUI.getWorkbench();
+    ICommandService commandService = (ICommandService) workbench.getService(ICommandService.class);
+    commandService.addExecutionListener(this);
 
+    // Aufgabe 6
     getSite().getPage().addSelectionListener(listener);
 
     // Table in das Composite packen, dann müsste auch ein Input funktionieren
@@ -179,18 +189,27 @@ public class MailListView extends ViewPart implements IExecutionListener {
   @Override
   public void notHandled(String commandId, NotHandledException exception) {
     // TODO Auto-generated method stub
-
   }
 
   @Override
   public void postExecuteFailure(String commandId, ExecutionException exception) {
     // TODO Auto-generated method stub
-
   }
 
   @Override
   public void postExecuteSuccess(String commandId, Object returnValue) {
-    System.out.println(this + ".postExecuteSuccess");
+    System.out.println(this + ".postExecuteSuccess"); // TODO DEBUG
+    if (returnValue instanceof IFilter) {
+      final IFilter filter = (IFilter) returnValue;
+      System.out.println(filter); // TODO DEBUG
+      tableviewer.addFilter(new ViewerFilter() {
+        @Override
+        public boolean select(Viewer viewer, Object parentElement, Object element) {
+          // TODO IMPLEMENT ME
+          return false;
+        }
+      });
+    }
 
   }
 
