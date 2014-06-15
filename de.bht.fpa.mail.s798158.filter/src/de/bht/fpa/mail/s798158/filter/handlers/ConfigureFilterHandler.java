@@ -80,9 +80,6 @@ public class ConfigureFilterHandler extends AbstractHandler {
     // in Kombinationsobjekt kippen
     switch (filterGroupType) {
     case INTERSECTION:
-      for (IFilter i : innerFilters) {
-        System.out.println(i);
-      }
       return new IntersectionFilter(innerFilters);
     case UNION:
       return new UnionFilter(innerFilters);
