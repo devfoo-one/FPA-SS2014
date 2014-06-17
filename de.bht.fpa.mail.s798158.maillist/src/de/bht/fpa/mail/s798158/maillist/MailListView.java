@@ -19,7 +19,13 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPart;
@@ -43,6 +49,7 @@ import de.bht.fpa.mail.s798158.fsnavigation.SelectionHelper;
 public class MailListView extends ViewPart implements IExecutionListener {
 
   private TableViewer tableviewer;
+  private Text searchText;
   private static final int IMPORTANCE_COLUMN_WIDTH = 70;
   private static final int RECEIVED_COLUMN_WIDTH = 90;
   private static final int READ_COLUMN_WIDTH = 40;
@@ -106,8 +113,28 @@ public class MailListView extends ViewPart implements IExecutionListener {
     getSite().getPage().addSelectionListener(listener);
 
     // Table in das Composite packen, dann müsste auch ein Input funktionieren
-    // final Composite searchComposite = new Composite(parent, SWT.VERTICAL);
-    final Composite tableComposite = new Composite(parent, SWT.VERTICAL);
+    parent.setLayout(new GridLayout(1, false));
+    final Composite searchComposite = new Composite(parent, SWT.NONE);
+    searchComposite.setLayout(new GridLayout(2, false));
+    searchComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+    Label searchLabel = new Label(searchComposite, SWT.NONE);
+    searchLabel.setText("Search: ");
+    searchText = new Text(searchComposite, SWT.BORDER);
+    searchText.setLayoutData(new GridData(SWT.FILL, SWT.END, true, false, 1, 1));
+    final Composite tableComposite = new Composite(parent, SWT.NONE);
+    tableComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+    searchText.addKeyListener(new KeyListener() {
+      @Override
+      public void keyPressed(KeyEvent e) {
+      }
+
+      @Override
+      public void keyReleased(KeyEvent e) {
+        System.out.println(searchText.getText());
+      }
+    });
+
     final TableViewerBuilder t = new TableViewerBuilder(tableComposite);
 
     final ColumnBuilder colImportance = t.createColumn("Importance");
@@ -168,13 +195,6 @@ public class MailListView extends ViewPart implements IExecutionListener {
 
     // Aufgabe 6
     getSite().setSelectionProvider(tableviewer);
-
-    // die restlichen Felder ins Composite kippen
-    // final Label searchLabel = new Label(searchComposite, SWT.NONE);
-    // searchLabel.setText("Search:");
-    // final Text foo = new Text(searchComposite, SWT.NONE);
-    // searchLabel.setVisible(true);
-
   }
 
   @Override
@@ -233,8 +253,6 @@ public class MailListView extends ViewPart implements IExecutionListener {
 
   @Override
   public void preExecute(String commandId, ExecutionEvent event) {
-    // TODO Auto-generated method stub
-
   }
 
 }
