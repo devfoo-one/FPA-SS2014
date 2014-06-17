@@ -41,7 +41,9 @@ import de.ralfebert.rcputils.tables.format.Formatter;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 import de.bht.fpa.mail.s000000.common.mail.model.Recipient;
 import de.bht.fpa.mail.s000000.common.table.MessageValues;
+import de.bht.fpa.mail.s000000.common.filter.FilterOperator;
 import de.bht.fpa.mail.s000000.common.filter.IFilter;
+import de.bht.fpa.mail.s000000.common.filter.StringCompareHelper;
 import de.bht.fpa.mail.s798158.fsnavigation.MyFileSystemObject;
 import de.bht.fpa.mail.s798158.fsnavigation.NavigationView;
 import de.bht.fpa.mail.s798158.fsnavigation.SelectionHelper;
@@ -50,6 +52,7 @@ public class MailListView extends ViewPart implements IExecutionListener {
 
   private TableViewer tableviewer;
   private Text searchText;
+  private ViewFilterPermanent permanentFilter;
   private static final int IMPORTANCE_COLUMN_WIDTH = 70;
   private static final int RECEIVED_COLUMN_WIDTH = 90;
   private static final int READ_COLUMN_WIDTH = 40;
@@ -124,6 +127,36 @@ public class MailListView extends ViewPart implements IExecutionListener {
     final Composite tableComposite = new Composite(parent, SWT.NONE);
     tableComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
+    // Zusatzaufgabe 5.1 permanentFilter konfigurieren
+    permanentFilter = new ViewFilterPermanent("") {
+      @Override
+      public boolean select(Viewer viewer, Object parentElement, Object element) {
+        final Message m = (Message) element;
+        final boolean c1 = StringCompareHelper.matches(m.getSubject(), this.getSearchString(), FilterOperator.CONTAINS);
+        final boolean c2 = StringCompareHelper.matches(m.getSubject(), this.getSearchString(), FilterOperator.CONTAINS);
+        final String received = Formatter.forDate(new SimpleDateFormat("dd.MM.yyyy")).format(m.getReceived());
+        final boolean c3 = StringCompareHelper.matches(received, this.getSearchString(), FilterOperator.CONTAINS);
+        final String sent = Formatter.forDate(new SimpleDateFormat("dd.MM.yyyy")).format(m.getSent());
+        final boolean c4 = StringCompareHelper.matches(sent, this.getSearchString(), FilterOperator.CONTAINS);
+        boolean c5 = false;
+        for (final Recipient recipient : m.getRecipients()) {
+          boolean cr1 = StringCompareHelper.matches(recipient.getEmail(), this.getSearchString(),
+              FilterOperator.CONTAINS);
+          boolean cr2 = StringCompareHelper.matches(recipient.getPersonal(), this.getSearchString(),
+              FilterOperator.CONTAINS);
+          if (cr1 || cr2) {
+            c5 = true;
+            break;
+          }
+        }
+        final boolean c6 = StringCompareHelper.matches(m.getSender().getEmail(), this.getSearchString(),
+            FilterOperator.CONTAINS);
+        final boolean c7 = StringCompareHelper.matches(m.getSender().getPersonal(), this.getSearchString(),
+            FilterOperator.CONTAINS);
+        return c1 || c2 || c3 || c4 || c5 || c6 || c7;
+      }
+    };
+
     searchText.addKeyListener(new KeyListener() {
       @Override
       public void keyPressed(KeyEvent e) {
@@ -131,7 +164,10 @@ public class MailListView extends ViewPart implements IExecutionListener {
 
       @Override
       public void keyReleased(KeyEvent e) {
-        System.out.println(searchText.getText());
+        // hier nicht die eigenen Filter verwenden, sonst läuft das nicht mehr
+        // ohne Plugin!
+        permanentFilter.setSearchString(searchText.getText());
+        tableviewer.refresh();
       }
     });
 
@@ -192,6 +228,7 @@ public class MailListView extends ViewPart implements IExecutionListener {
     Collection<Message> messages = null;
     t.setInput(messages);
     tableviewer = t.getTableViewer();
+    tableviewer.addFilter(permanentFilter);
 
     // Aufgabe 6
     getSite().setSelectionProvider(tableviewer);
@@ -218,19 +255,9 @@ public class MailListView extends ViewPart implements IExecutionListener {
   @Override
   public void postExecuteSuccess(String commandId, Object returnValue) {
     if (returnValue instanceof IFilter) {
-
-      /*
-       * aktuellen Filter löschen. ziemlich hässlich, eventuell geht das noch
-       * hübscher.
-       */
-      ViewerFilter emptyFilter = new ViewerFilter() {
-        @Override
-        public boolean select(Viewer viewer, Object parentElement, Object element) {
-          return true;
-        }
-      };
       ViewerFilter[] emptyFilters = new ViewerFilter[1];
-      emptyFilters[0] = emptyFilter;
+      // permanentFilter setzen und alle alten löschen
+      emptyFilters[0] = permanentFilter;
       tableviewer.setFilters(emptyFilters);
 
       // wenn ein Filter kam dann hier den Filter laden
@@ -247,6 +274,7 @@ public class MailListView extends ViewPart implements IExecutionListener {
           return false;
         }
       });
+      tableviewer.refresh();
     }
 
   }
