@@ -9,24 +9,39 @@
       </category>
       <command
             categoryId="de.bht.fpa.mail.s798158.filter.commands.category"
-            id="de.bht.fpa.mail.s798158.filter.commands.sampleCommand"
+            id="de.bht.fpa.mail.s798158.filter.commands.ConfigureFilter"
             name="Configure Filter...">
+      </command>
+      <command
+            categoryId="de.bht.fpa.mail.s798158.filter.commands.category"
+            id="de.bht.fpa.mail.s798158.filter.commands.ClearFilter"
+            name="Clear...">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="de.bht.fpa.mail.s798158.filter.handlers.ConfigureFilterHandler"
-            commandId="de.bht.fpa.mail.s798158.filter.commands.sampleCommand">
+            commandId="de.bht.fpa.mail.s798158.filter.commands.ConfigureFilter">
+      </handler>
+            <handler
+            class="de.bht.fpa.mail.s798158.filter.handlers.ClearFilterHandler"
+            commandId="de.bht.fpa.mail.s798158.filter.commands.ClearFilter">
       </handler>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="de.bht.fpa.mail.s798158.filter.commands.sampleCommand"
+            commandId="de.bht.fpa.mail.s798158.filter.commands.ConfigureFilter"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+8">
+      </key>
+      <key
+            commandId="de.bht.fpa.mail.s798158.filter.commands.ClearFilter"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+9">
       </key>
    </extension>
    <extension
@@ -34,13 +49,18 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu?after=additions">
          <menu
-               id="de.bht.fpa.mail.s798158.filter.menus.sampleMenu"
+               id="de.bht.fpa.mail.s798158.filter.menus.FilterMenu"
                label="Filter"
                mnemonic="F">
             <command
-                  commandId="de.bht.fpa.mail.s798158.filter.commands.sampleCommand"
-                  id="de.bht.fpa.mail.s798158.filter.menus.sampleCommand"
+                  commandId="de.bht.fpa.mail.s798158.filter.commands.ConfigureFilter"
+                  id="de.bht.fpa.mail.s798158.filter.menus.ConfigureFilter"
                   mnemonic="C">
+            </command>
+            <command
+                  commandId="de.bht.fpa.mail.s798158.filter.commands.ClearFilter"
+                  id="de.bht.fpa.mail.s798158.filter.menus.ConfigureFilter"
+                  mnemonic="X">
             </command>
          </menu>
       </menuContribution>
@@ -49,9 +69,9 @@
          <toolbar
                id="de.bht.fpa.mail.s798158.filter.toolbars.sampleToolbar">
             <command
-                  commandId="de.bht.fpa.mail.s798158.filter.commands.sampleCommand"
+                  commandId="de.bht.fpa.mail.s798158.filter.commands.ConfigureFilter"
                   icon="icons/sample.gif"
-                  id="de.bht.fpa.mail.s798158.filter.toolbars.sampleCommand"
+                  id="de.bht.fpa.mail.s798158.filter.toolbars.ConfigureFilter"
                   tooltip="Configure Filter...">
             </command>
          </toolbar>
