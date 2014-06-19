@@ -255,6 +255,11 @@ public class MailListView extends ViewPart implements IExecutionListener {
   @Override
   public void postExecuteSuccess(String commandId, Object returnValue) {
     if (returnValue instanceof IFilter) {
+      ViewerFilter[] emptyFilters = new ViewerFilter[1];
+      // permanentFilter setzen und alle alten löschen
+      emptyFilters[0] = permanentFilter;
+      tableviewer.setFilters(emptyFilters);
+
       // wenn ein Filter kam dann hier den Filter laden
       final IFilter filter = (IFilter) returnValue;
       tableviewer.addFilter(new ViewerFilter() {
