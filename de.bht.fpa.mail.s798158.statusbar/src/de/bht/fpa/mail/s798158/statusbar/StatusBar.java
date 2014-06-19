@@ -28,7 +28,7 @@ public class StatusBar implements IStartup {
             public void selectionChanged(IWorkbenchPart part, ISelection selection) {
               MyFileSystemObject selectedFSO = SelectionHelper.handleStructuredSelection(selection,
                   MyFileSystemObject.class);
-              if (selectedFSO != null && selectedFSO instanceof MyFileSystemObject) {
+              if (selectedFSO != null) {
                 final String message = "Directory '" + selectedFSO.getFile().getAbsolutePath() + "' was selected";
                 StatusBarHelper.setMessage(message);
               }

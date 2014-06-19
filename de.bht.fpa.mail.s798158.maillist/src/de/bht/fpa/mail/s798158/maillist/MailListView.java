@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 
 import javax.xml.bind.JAXB;
@@ -59,15 +58,17 @@ public class MailListView extends ViewPart implements IExecutionListener {
   private static final int SENDER_COLUMN_WIDTH = 175;
   private static final int RECIPIENTS_COLUMN_WIDTH = 175;
   private static final int SUBJECT_COLUMN_WIDTH = 320;
+  private ArrayList<Message> messageList = new ArrayList<>();
 
   // Aufgabe 6
   private final ISelectionListener listener = new ISelectionListener() {
+
     @Override
     public void selectionChanged(IWorkbenchPart part, ISelection selection) {
       // pruefen ob die Selection vom NavigationView kommt usw...
       if (part instanceof NavigationView && selection != null && selection instanceof TreeSelection) {
         MyFileSystemObject selectedFSO = SelectionHelper.handleStructuredSelection(selection, MyFileSystemObject.class);
-        ArrayList<Message> messageList = new ArrayList<Message>();
+        messageList = new ArrayList<Message>();
         // FilenameFilter auf xml-Dateien
         FilenameFilter fileFilter = new FilenameFilter() {
           @Override
@@ -223,15 +224,14 @@ public class MailListView extends ViewPart implements IExecutionListener {
     colSubject.setPixelWidth(SUBJECT_COLUMN_WIDTH);
     colSubject.build();
 
-    // Collection<Message> messages = new
-    // RandomTestDataProvider(NUM_MESSAGES).getMessages();
-    Collection<Message> messages = null;
-    t.setInput(messages);
+    t.setInput(null);
     tableviewer = t.getTableViewer();
     tableviewer.addFilter(permanentFilter);
 
     // Aufgabe 6
     getSite().setSelectionProvider(tableviewer);
+
+    tableviewer.setFilters(new ViewerFilter[] { permanentFilter });
   }
 
   @Override
@@ -255,19 +255,13 @@ public class MailListView extends ViewPart implements IExecutionListener {
   @Override
   public void postExecuteSuccess(String commandId, Object returnValue) {
     if (returnValue instanceof IFilter) {
-      ViewerFilter[] emptyFilters = new ViewerFilter[1];
-      // permanentFilter setzen und alle alten löschen
-      emptyFilters[0] = permanentFilter;
-      tableviewer.setFilters(emptyFilters);
-
       // wenn ein Filter kam dann hier den Filter laden
       final IFilter filter = (IFilter) returnValue;
       tableviewer.addFilter(new ViewerFilter() {
         @Override
         public boolean select(Viewer viewer, Object parentElement, Object element) {
           // input aus dem viewer holen (muss hier sein wegen Aktualisierungen)
-          final Collection<Message> messagesToFilter = (Collection<Message>) viewer.getInput();
-          final Set<Message> filteredMessages = filter.filter(messagesToFilter);
+          final Set<Message> filteredMessages = filter.filter(messageList);
           if (filteredMessages.contains(element)) {
             return true;
           }
