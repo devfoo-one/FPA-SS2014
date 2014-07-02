@@ -1,7 +1,7 @@
 package de.bht.fpa.mail.s798158.maillist;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.commands.ExecutionEvent;
@@ -52,7 +52,6 @@ public class MailListView extends ViewPart implements IExecutionListener {
   private static final int SENDER_COLUMN_WIDTH = 175;
   private static final int RECIPIENTS_COLUMN_WIDTH = 175;
   private static final int SUBJECT_COLUMN_WIDTH = 320;
-  private final ArrayList<Message> messageList = new ArrayList<>();
 
   // Aufgabe 6
   private final ISelectionListener listener = new ISelectionListener() {
@@ -236,7 +235,8 @@ public class MailListView extends ViewPart implements IExecutionListener {
         @Override
         public boolean select(Viewer viewer, Object parentElement, Object element) {
           // input aus dem viewer holen (muss hier sein wegen Aktualisierungen)
-          final Set<Message> filteredMessages = filter.filter(messageList);
+          final List<Message> input = (List<Message>) viewer.getInput();
+          final Set<Message> filteredMessages = filter.filter(input);
           if (filteredMessages.contains(element)) {
             return true;
           }

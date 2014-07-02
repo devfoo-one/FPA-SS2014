@@ -35,7 +35,7 @@
             commandId="de.bht.fpa.mail.s798158.imapnavigation.commands.sampleCommand"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+6">
+            sequence="M1+4">
       </key>
    </extension>
    <extension

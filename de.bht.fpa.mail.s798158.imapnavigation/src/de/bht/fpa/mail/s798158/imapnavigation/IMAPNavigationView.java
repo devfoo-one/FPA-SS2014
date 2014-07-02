@@ -57,7 +57,7 @@ public class IMAPNavigationView extends ViewPart {
 
         if (selectedFSO != null) {
           System.out.println("Selected directory: " + selectedFSO.getAbsolutePath());
-          System.out.println("Number of messages: " + selectedFSO.getChildren().size());
+          System.out.println("Number of messages: " + selectedFSO.getMessages().size());
 
           for (Message message : selectedFSO.getMessages()) {
             System.out.println(message);
