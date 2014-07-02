@@ -3,6 +3,8 @@ package de.bht.fpa.mail.s798158.fsnavigation;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
+import de.bht.fpa.mail.s798158.common.IDirectory;
+
 public class ViewContentProvider implements ITreeContentProvider {
 
   /**
@@ -20,7 +22,7 @@ public class ViewContentProvider implements ITreeContentProvider {
     // every given tree item, we say it has no children. Here you should cast
     // the parentElement to your own class and return its children.
     // return new Object[0];
-    final MyFileSystemObject elementFile = (MyFileSystemObject) parentElement;
+    final IDirectory elementFile = (IDirectory) parentElement;
     return elementFile.getChildren().toArray();
   }
 
@@ -40,7 +42,7 @@ public class ViewContentProvider implements ITreeContentProvider {
     // For every element, we say to the framework that is has no children. Here
     // you should cast the element to your own class and check if it has
     // children.
-    final MyFileSystemObject elementFile = (MyFileSystemObject) element;
+    final IDirectory elementFile = (IDirectory) element;
     return elementFile.hasChildren();
   }
 

@@ -1,29 +1,55 @@
 package de.bht.fpa.mail.s798158.fsnavigation;
 
-import java.io.File;
 import java.util.ArrayList;
 
-public abstract class MyFileSystemObject {
-  private final java.io.File file;
+import de.bht.fpa.mail.s000000.common.mail.model.Message;
+import de.bht.fpa.mail.s798158.common.IDirectory;
+
+public abstract class MyFileSystemObject implements IDirectory {
+  protected final java.io.File file;
 
   public MyFileSystemObject(final java.io.File file) {
     this.file = file;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see de.bht.fpa.mail.s798158.fsnavigation.IDirectory#hasChildren()
+   */
+  @Override
   public boolean hasChildren() {
     return false;
   }
 
-  public ArrayList<MyFileSystemObject> getChildren() {
+  /*
+   * (non-Javadoc)
+   * 
+   * @see de.bht.fpa.mail.s798158.fsnavigation.IDirectory#getChildren()
+   */
+  @Override
+  public ArrayList<IDirectory> getChildren() {
     return null;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see de.bht.fpa.mail.s798158.fsnavigation.IDirectory#getName()
+   */
+  @Override
   public String getName() {
     return file.getName();
   }
 
-  public File getFile() {
-    return file;
+  @Override
+  public String getAbsolutePath() {
+    return file.getAbsolutePath();
+  }
+
+  @Override
+  public ArrayList<Message> getMessages() {
+    return null;
   }
 
   @Override

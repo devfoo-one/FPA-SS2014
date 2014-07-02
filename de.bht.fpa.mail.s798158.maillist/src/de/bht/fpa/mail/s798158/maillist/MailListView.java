@@ -1,12 +1,8 @@
 package de.bht.fpa.mail.s798158.maillist;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Set;
-
-import javax.xml.bind.JAXB;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -43,9 +39,8 @@ import de.bht.fpa.mail.s000000.common.table.MessageValues;
 import de.bht.fpa.mail.s000000.common.filter.FilterOperator;
 import de.bht.fpa.mail.s000000.common.filter.IFilter;
 import de.bht.fpa.mail.s000000.common.filter.StringCompareHelper;
-import de.bht.fpa.mail.s798158.fsnavigation.MyFileSystemObject;
-import de.bht.fpa.mail.s798158.fsnavigation.NavigationView;
-import de.bht.fpa.mail.s798158.fsnavigation.SelectionHelper;
+import de.bht.fpa.mail.s798158.common.IDirectory;
+import de.bht.fpa.mail.s000000.common.rcp.selection.SelectionHelper;
 
 public class MailListView extends ViewPart implements IExecutionListener {
 
@@ -66,41 +61,13 @@ public class MailListView extends ViewPart implements IExecutionListener {
     @Override
     public void selectionChanged(IWorkbenchPart part, ISelection selection) {
       // pruefen ob die Selection vom NavigationView kommt usw...
-      if (part instanceof NavigationView && selection != null && selection instanceof TreeSelection) {
-        MyFileSystemObject selectedFSO = SelectionHelper.handleStructuredSelection(selection, MyFileSystemObject.class);
-        messageList = new ArrayList<Message>();
-        // FilenameFilter auf xml-Dateien
-        FilenameFilter fileFilter = new FilenameFilter() {
-          @Override
-          public boolean accept(File dir, String name) {
-            if (name.toLowerCase().endsWith(".xml")) {
-              // pruefen ob es nicht ein Ordner mit dem Name *.xml ist
-              if (new File(dir.getAbsolutePath() + File.separator + name).isFile()) {
-                return true;
-              }
-            }
-            return false;
-          }
-        };
-
+      if (selection != null && selection instanceof TreeSelection) {
+        IDirectory selectedFSO = SelectionHelper.handleStructuredSelection(selection, IDirectory.class);
         if (selectedFSO != null) {
-          for (final java.io.File element : selectedFSO.getFile().listFiles(fileFilter)) {
-            // XML File mit JAXB einlesen
-            Message message = null;
-            try {
-              message = JAXB.unmarshal(element, Message.class);
-            } catch (Exception e) {
-              System.err.println(e.getMessage());
-            }
-
-            if (message != null && message.getId() != null) {
-              // wenn message.getId() == null dann wohl falsches Format
-              messageList.add(message);
-            }
-          }
+          messageList = selectedFSO.getMessages();
+          tableviewer.setInput(messageList);
+          tableviewer.refresh();
         }
-        tableviewer.setInput(messageList);
-        tableviewer.refresh();
       }
     }
   };

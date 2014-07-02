@@ -9,8 +9,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 import de.bht.fpa.mail.s000000.common.rcp.statusbar.StatusBarHelper;
-import de.bht.fpa.mail.s798158.fsnavigation.MyFileSystemObject;
-import de.bht.fpa.mail.s798158.fsnavigation.SelectionHelper;
+import de.bht.fpa.mail.s000000.common.rcp.selection.SelectionHelper;
+import de.bht.fpa.mail.s798158.common.IDirectory;
 
 public class StatusBar implements IStartup {
 
@@ -26,10 +26,9 @@ public class StatusBar implements IStartup {
           window.getActivePage().addSelectionListener(new ISelectionListener() {
             @Override
             public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-              MyFileSystemObject selectedFSO = SelectionHelper.handleStructuredSelection(selection,
-                  MyFileSystemObject.class);
+              IDirectory selectedFSO = SelectionHelper.handleStructuredSelection(selection, IDirectory.class);
               if (selectedFSO != null) {
-                final String message = "Directory '" + selectedFSO.getFile().getAbsolutePath() + "' was selected";
+                final String message = "Directory '" + selectedFSO.getAbsolutePath() + "' was selected";
                 StatusBarHelper.setMessage(message);
               }
             }

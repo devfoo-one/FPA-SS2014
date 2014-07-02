@@ -6,11 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.xml.bind.JAXB;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -60,34 +57,8 @@ public class NavigationView extends ViewPart {
             .handleStructuredSelectionEvent(event, MyFileSystemObject.class);
 
         if (selectedFSO != null) {
-          // FilenameFilter auf xml-Dateien
-          FilenameFilter fileFilter = new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-              if (name.toLowerCase().endsWith(".xml")) {
-                // pruefen ob es nicht ein Ordner mit dem Name *.xml ist
-                if (new File(dir.getAbsolutePath() + File.separator + name).isFile()) {
-                  return true;
-                }
-              }
-              return false;
-            }
-          };
-          for (final java.io.File element : selectedFSO.getFile().listFiles(fileFilter)) {
-            // XML File mit JAXB einlesen
-            Message message = null;
-            try {
-              message = JAXB.unmarshal(element, Message.class);
-            } catch (Exception e) {
-              System.err.println(e.getMessage());
-            }
-
-            if (message != null && message.getId() != null) {
-              // wenn message.getId() == null dann wohl falsches Format
-              messageList.add(message);
-            }
-          }
-          System.out.println("Selected directory: " + selectedFSO.getFile().getAbsolutePath());
+          messageList = selectedFSO.getMessages();
+          System.out.println("Selected directory: " + selectedFSO.getAbsolutePath());
           System.out.println("Number of messages: " + messageList.size());
           for (Message message : messageList) {
             System.out.println(message);
@@ -143,14 +114,14 @@ public class NavigationView extends ViewPart {
       history = new BufferedWriter(new FileWriter(historyFile, true));
       // true am FileWriter fuer append
       // http://beginnersbook.com/2014/01/how-to-append-to-a-file-in-java/
-      history.write(arg.getFile().getAbsolutePath());
+      history.write(arg.getAbsolutePath());
       history.newLine();
       history.close();
     } catch (IOException e) {
       try {
         historyFile.createNewFile();
         history = new BufferedWriter(new FileWriter(historyFile, true));
-        history.write(arg.getFile().getAbsolutePath());
+        history.write(arg.getAbsolutePath());
         history.newLine();
         history.close();
       } catch (IOException e1) {
