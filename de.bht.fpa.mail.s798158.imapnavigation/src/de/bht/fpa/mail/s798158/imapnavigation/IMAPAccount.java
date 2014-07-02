@@ -44,7 +44,7 @@ public class IMAPAccount implements IDirectory {
   @Override
   public List<Message> getMessages() {
     // ein Account kann keine Messages haben
-    return null;
+    return new ArrayList<Message>();
   }
 
 }

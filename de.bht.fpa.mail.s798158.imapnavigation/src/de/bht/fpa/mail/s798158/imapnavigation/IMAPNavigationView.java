@@ -1,7 +1,5 @@
 package de.bht.fpa.mail.s798158.imapnavigation;
 
-import java.util.ArrayList;
-
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -23,6 +21,7 @@ import static de.bht.fpa.mail.s000000.common.mail.model.builder.Builders.newAcco
 
 public class IMAPNavigationView extends ViewPart {
   public static final String ID = "de.bht.fpa.s798158.imapnavigation.IMAPNavigationView";
+  public static final String IMAP_JOB_NAME = "bhtfpa_gmail";
   private TreeViewer viewer;
 
   /**
@@ -53,16 +52,15 @@ public class IMAPNavigationView extends ViewPart {
       public void selectionChanged(SelectionChangedEvent event) {
         // Event auslesen und mithilfe von SelectionHelper ausgewaehltes Objekt
         // auf MyFileSystemObject casten
-        ArrayList<Message> messageList = new ArrayList<Message>();
+
         IDirectory selectedFSO = SelectionHelper.handleStructuredSelectionEvent(event, IDirectory.class);
 
         if (selectedFSO != null) {
-          if (messageList != null) {
-            System.out.println("Selected directory: " + selectedFSO.getAbsolutePath());
-            System.out.println("Number of messages: " + messageList.size());
-            for (Message message : selectedFSO.getMessages()) {
-              System.out.println(message);
-            }
+          System.out.println("Selected directory: " + selectedFSO.getAbsolutePath());
+          System.out.println("Number of messages: " + selectedFSO.getChildren().size());
+
+          for (Message message : selectedFSO.getMessages()) {
+            System.out.println(message);
           }
         }
       }
@@ -74,16 +72,13 @@ public class IMAPNavigationView extends ViewPart {
         if (event.getJob() instanceof IMAPSyncJob) {
           final IWorkbench workbench = PlatformUI.getWorkbench();
           workbench.getDisplay().asyncExec(new Runnable() {
-
             @Override
             public void run() {
+              Account newAccount = ImapHelper.getAccount(IMAP_JOB_NAME);
+              viewer.setInput(new IMAPAccountCollection(new IMAPAccount(newAccount)));
               viewer.refresh();
-              System.out.println("ich wurde refreshed!");
-
             }
-
           });
-
         }
       }
     });
@@ -94,13 +89,16 @@ public class IMAPNavigationView extends ViewPart {
    * We will set up a model to initialize tree hierarchy.
    */
   private Object createModel() {
-    // Input festlegen
-    Account testaccount = newAccountBuilder().host("imap.gmail.com").username("bhtfpa@googlemail.com")
-        .password("B-BgxkT_anr2bubbyTLM").name("bhtfpa_gmail").build();
-    ImapHelper.saveAccount(testaccount);
-    final IMAPSyncJob syncJob = new IMAPSyncJob(testaccount);
-    syncJob.setUser(true);
-    syncJob.schedule();
+    // Wenn Account bereits in der Datenbank dann dort holen, ansonsten neu
+    // anlegen
+    final Account testaccount;
+    if (ImapHelper.getAccount(IMAP_JOB_NAME) != null) {
+      testaccount = ImapHelper.getAccount(IMAP_JOB_NAME);
+    } else {
+      testaccount = newAccountBuilder().host("imap.gmail.com").username("bhtfpa@googlemail.com")
+          .password("B-BgxkT_anr2bubbyTLM").name(IMAP_JOB_NAME).build();
+      ImapHelper.saveAccount(testaccount);
+    }
     return new IMAPAccountCollection(new IMAPAccount(testaccount));
   }
 

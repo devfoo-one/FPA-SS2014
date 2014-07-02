@@ -1,6 +1,8 @@
 package de.bht.fpa.mail.s798158.imapnavigation;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import de.bht.fpa.mail.s798158.common.IDirectory;
 import de.bht.fpa.mail.s000000.common.mail.model.Folder;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
@@ -39,8 +41,13 @@ public class IMAPDirectory implements IDirectory {
   }
 
   @Override
-  public ArrayList<Message> getMessages() {
-    return (ArrayList<Message>) folder.getMessages();
+  public List<Message> getMessages() {
+    if (folder.getMessages() != null) {
+      return folder.getMessages();
+    } else {
+      return new ArrayList<Message>();
+    }
+
   }
 
 }
