@@ -57,11 +57,10 @@ public class IMAPNavigationView extends ViewPart {
         IDirectory selectedFSO = SelectionHelper.handleStructuredSelectionEvent(event, IDirectory.class);
 
         if (selectedFSO != null) {
-          messageList = selectedFSO.getMessages();
           if (messageList != null) {
             System.out.println("Selected directory: " + selectedFSO.getAbsolutePath());
             System.out.println("Number of messages: " + messageList.size());
-            for (Message message : messageList) {
+            for (Message message : selectedFSO.getMessages()) {
               System.out.println(message);
             }
           }

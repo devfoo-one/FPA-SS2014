@@ -52,7 +52,7 @@ public class MailListView extends ViewPart implements IExecutionListener {
   private static final int SENDER_COLUMN_WIDTH = 175;
   private static final int RECIPIENTS_COLUMN_WIDTH = 175;
   private static final int SUBJECT_COLUMN_WIDTH = 320;
-  private ArrayList<Message> messageList = new ArrayList<>();
+  private final ArrayList<Message> messageList = new ArrayList<>();
 
   // Aufgabe 6
   private final ISelectionListener listener = new ISelectionListener() {
@@ -66,8 +66,7 @@ public class MailListView extends ViewPart implements IExecutionListener {
         if (selection != null) {
           IDirectory selectedFSO = (IDirectory) sel;
           if (selectedFSO != null) {
-            messageList = selectedFSO.getMessages();
-            tableviewer.setInput(messageList);
+            tableviewer.setInput(selectedFSO.getMessages());
             tableviewer.refresh();
           }
         }

@@ -1,6 +1,7 @@
 package de.bht.fpa.mail.s798158.imapnavigation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.bht.fpa.mail.s000000.common.mail.model.Account;
 import de.bht.fpa.mail.s000000.common.mail.model.Folder;
@@ -41,7 +42,7 @@ public class IMAPAccount implements IDirectory {
   }
 
   @Override
-  public ArrayList<Message> getMessages() {
+  public List<Message> getMessages() {
     // ein Account kann keine Messages haben
     return null;
   }

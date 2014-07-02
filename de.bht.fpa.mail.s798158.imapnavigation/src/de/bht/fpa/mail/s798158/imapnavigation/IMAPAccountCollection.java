@@ -46,7 +46,7 @@ public class IMAPAccountCollection implements IDirectory {
   }
 
   @Override
-  public ArrayList<Message> getMessages() {
+  public List<Message> getMessages() {
     return null;
   }
 

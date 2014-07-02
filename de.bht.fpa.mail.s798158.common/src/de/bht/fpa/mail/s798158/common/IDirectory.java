@@ -1,6 +1,8 @@
 package de.bht.fpa.mail.s798158.common;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 
 public interface IDirectory {
@@ -13,6 +15,6 @@ public interface IDirectory {
 
   public abstract String getAbsolutePath();
 
-  public abstract ArrayList<Message> getMessages();
+  public abstract List<Message> getMessages();
 
 }
