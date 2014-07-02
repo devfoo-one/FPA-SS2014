@@ -2,37 +2,47 @@ package de.bht.fpa.mail.s798158.imapnavigation;
 
 import java.util.ArrayList;
 
+import de.bht.fpa.mail.s000000.common.mail.model.Account;
+import de.bht.fpa.mail.s000000.common.mail.model.Folder;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 import de.bht.fpa.mail.s798158.common.IDirectory;
 
 public class IMAPAccount implements IDirectory {
+  private final Account account;
+
+  public IMAPAccount(final Account account) {
+    this.account = account;
+  }
 
   @Override
   public boolean hasChildren() {
-    // TODO Auto-generated method stub
-    return false;
+    return account.getFolders().size() > 0;
   }
 
   @Override
   public ArrayList<IDirectory> getChildren() {
-    // TODO Auto-generated method stub
-    return null;
+    ArrayList<IDirectory> returnList = new ArrayList<IDirectory>();
+    if (hasChildren()) {
+      for (Folder f : account.getFolders()) {
+        returnList.add(new IMAPDirectory(f));
+      }
+    }
+    return returnList;
   }
 
   @Override
   public String getName() {
-    // TODO Auto-generated method stub
-    return null;
+    return account.getName();
   }
 
   @Override
   public String getAbsolutePath() {
-    // TODO Auto-generated method stub
-    return null;
+    return account.getHost();
   }
 
   @Override
   public ArrayList<Message> getMessages() {
+    // ein Account kann keine Messages haben
     return null;
   }
 

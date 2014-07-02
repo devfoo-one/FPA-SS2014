@@ -37,7 +37,7 @@ public class IMAPNavigationView extends ViewPart {
   private Object createModel() {
     // Our root item is simply a dummy Object. Here you need to provide your own
     // root class.
-    return new Object();
+    return new IMAPAccountCollection(new IMAPAccount(new DummyAccount().getDummyAccount()));
   }
 
   /**
