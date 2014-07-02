@@ -17,7 +17,6 @@ public class IMAPAccountCollection implements IDirectory {
 
   public IMAPAccountCollection(IMAPAccount... accounts) {
     for (IMAPAccount a : accounts) {
-      System.out.println(a);
       this.accounts.add(a);
     }
   }

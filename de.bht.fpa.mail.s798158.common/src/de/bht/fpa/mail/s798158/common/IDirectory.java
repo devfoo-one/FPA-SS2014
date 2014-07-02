@@ -5,9 +5,9 @@ import de.bht.fpa.mail.s000000.common.mail.model.Message;
 
 public interface IDirectory {
 
-  public abstract boolean hasChildren();
+  abstract boolean hasChildren();
 
-  public abstract ArrayList<IDirectory> getChildren();
+  abstract ArrayList<IDirectory> getChildren();
 
   public abstract String getName();
 

@@ -7,11 +7,19 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 
+import de.bht.fpa.mail.s000000.common.mail.imapsync.ImapHelper;
+import de.bht.fpa.mail.s000000.common.mail.model.Account;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 import de.bht.fpa.mail.s798158.common.IDirectory;
 import de.bht.fpa.mail.s000000.common.rcp.selection.SelectionHelper;
+import static de.bht.fpa.mail.s000000.common.mail.model.builder.Builders.newAccountBuilder;
 
 public class IMAPNavigationView extends ViewPart {
   public static final String ID = "de.bht.fpa.s798158.imapnavigation.IMAPNavigationView";
@@ -61,15 +69,40 @@ public class IMAPNavigationView extends ViewPart {
       }
     });
 
+    Job.getJobManager().addJobChangeListener(new JobChangeAdapter() {
+      @Override
+      public void done(IJobChangeEvent event) {
+        if (event.getJob() instanceof IMAPSyncJob) {
+          final IWorkbench workbench = PlatformUI.getWorkbench();
+          workbench.getDisplay().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+              viewer.refresh();
+              System.out.println("ich wurde refreshed!");
+
+            }
+
+          });
+
+        }
+      }
+    });
+
   }
 
   /**
    * We will set up a model to initialize tree hierarchy.
    */
   private Object createModel() {
-    // Our root item is simply a dummy Object. Here you need to provide your own
-    // root class.
-    return new IMAPAccountCollection(new IMAPAccount(new DummyAccount().getDummyAccount()));
+    // Input festlegen
+    Account testaccount = newAccountBuilder().host("imap.gmail.com").username("bhtfpa@googlemail.com")
+        .password("B-BgxkT_anr2bubbyTLM").name("bhtfpa_gmail").build();
+    ImapHelper.saveAccount(testaccount);
+    final IMAPSyncJob syncJob = new IMAPSyncJob(testaccount);
+    syncJob.setUser(true);
+    syncJob.schedule();
+    return new IMAPAccountCollection(new IMAPAccount(testaccount));
   }
 
   /**
