@@ -10,7 +10,6 @@ import org.eclipse.core.commands.IExecutionListener;
 import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
@@ -61,13 +60,18 @@ public class MailListView extends ViewPart implements IExecutionListener {
     @Override
     public void selectionChanged(IWorkbenchPart part, ISelection selection) {
       // pruefen ob die Selection vom NavigationView kommt usw...
-      if (selection != null && selection instanceof TreeSelection) {
-        IDirectory selectedFSO = SelectionHelper.handleStructuredSelection(selection, IDirectory.class);
-        if (selectedFSO != null) {
-          messageList = selectedFSO.getMessages();
-          tableviewer.setInput(messageList);
-          tableviewer.refresh();
+      // if (selection != null && selection instanceof TreeSelection) {
+      if (selection != null) {
+        Object sel = SelectionHelper.handleStructuredSelection(selection, IDirectory.class);
+        if (selection != null) {
+          IDirectory selectedFSO = (IDirectory) sel;
+          if (selectedFSO != null) {
+            messageList = selectedFSO.getMessages();
+            tableviewer.setInput(messageList);
+            tableviewer.refresh();
+          }
         }
+
       }
     }
   };

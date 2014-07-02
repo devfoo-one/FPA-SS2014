@@ -1,9 +1,17 @@
 package de.bht.fpa.mail.s798158.imapnavigation;
 
+import java.util.ArrayList;
+
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
+
+import de.bht.fpa.mail.s000000.common.mail.model.Message;
+import de.bht.fpa.mail.s798158.common.IDirectory;
+import de.bht.fpa.mail.s000000.common.rcp.selection.SelectionHelper;
 
 public class IMAPNavigationView extends ViewPart {
   public static final String ID = "de.bht.fpa.s798158.imapnavigation.IMAPNavigationView";
@@ -29,6 +37,30 @@ public class IMAPNavigationView extends ViewPart {
     // Here we set the root of the tree. The framework will ask for more data
     // when the user expands tree items.
     viewer.setInput(createModel());
+
+    this.getSite().setSelectionProvider(viewer);
+
+    viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+      @Override
+      public void selectionChanged(SelectionChangedEvent event) {
+        // Event auslesen und mithilfe von SelectionHelper ausgewaehltes Objekt
+        // auf MyFileSystemObject casten
+        ArrayList<Message> messageList = new ArrayList<Message>();
+        IDirectory selectedFSO = SelectionHelper.handleStructuredSelectionEvent(event, IDirectory.class);
+
+        if (selectedFSO != null) {
+          messageList = selectedFSO.getMessages();
+          if (messageList != null) {
+            System.out.println("Selected directory: " + selectedFSO.getAbsolutePath());
+            System.out.println("Number of messages: " + messageList.size());
+            for (Message message : messageList) {
+              System.out.println(message);
+            }
+          }
+        }
+      }
+    });
+
   }
 
   /**
