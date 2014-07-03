@@ -2,19 +2,18 @@ package de.bht.fpa.mail.s798158.common;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 
 public interface IDirectory {
 
-  abstract boolean hasChildren();
+  boolean hasChildren();
 
-  abstract ArrayList<IDirectory> getChildren();
+  ArrayList<IDirectory> getChildren();
 
-  public abstract String getName();
+  String getName();
 
-  public abstract String getAbsolutePath();
+  String getAbsolutePath();
 
-  public abstract List<Message> getMessages();
+  List<Message> getMessages();
 
 }
